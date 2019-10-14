@@ -33,8 +33,34 @@ var questions =
     }
 ];
 
+document.getElementById("start").addEventListener("click", function () {
+    // initialize button elements
+    var parent = document.getElementById("start").parentNode;
+    var vanish = document.getElementById("start");
 
-function countdown()
+
+    // remove the start button
+    parent.removeChild(vanish);
+
+    // populate page with multiple choice elements
+    for(var i=0; i<4; i++) {
+        var nbut = document.createElement("BUTTON");
+        nbut.classList.add("btn");
+        nbut.classList.add("btn-primary");
+        nbut.classList.add("m-2");
+        var quest = document.createTextNode(questions[0].choices[i]);
+        nbut.appendChild(quest);
+        parent.appendChild(nbut);
+    }
+
+});
+
+
+
+console.log(questions[1].choices[0]);
+
+
+/* function countdown()
 {
     this.start_time = "1:15";
     this.target_id = "#timer";
@@ -71,4 +97,4 @@ countdown.prototype.tick = function()
 countdown.prototype.updateTarget = function()
 {
 
-}
+} */
