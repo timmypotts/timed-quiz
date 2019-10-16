@@ -99,6 +99,7 @@ function nextRound(elem) {
 
     if(round===5){
         stopTimer();
+        //Removes buttons and prompt once all questions are answered, replaces them with score.
         document.getElementById("prompt").textContent="Your final score is: " + score;
         for (i=0; i<4; i++) {
             document.getElementById(qindex[i]).remove();
