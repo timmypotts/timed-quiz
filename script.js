@@ -40,7 +40,7 @@ var score = 0;
 var round = 0;
 
 // Start timer and populate page with prompt and answers
-document.getElementById("start").addEventListener("click", function () {
+function initialize () {
     // initialize button elements
     var parent = document.getElementById("start").parentNode;
     var vanish = document.getElementById("start");
@@ -74,7 +74,7 @@ document.getElementById("start").addEventListener("click", function () {
     }
     round++;
     return round;
-});
+}
 
 Element.prototype.remove = function() {
     this.parentElement.removeChild(this);
@@ -93,7 +93,12 @@ function nextRound(elem) {
         score++;
         console.log(score)
     }
+    else {
+        secondsElapsed+=10;
+    }
+
     if(round===5){
+        stopTimer();
         document.getElementById("prompt").textContent="Your final score is: " + score;
         for (i=0; i<4; i++) {
             document.getElementById(qindex[i]).remove();
@@ -106,41 +111,54 @@ function nextRound(elem) {
     }
     round++
 }
-/* function countdown()
-{
-    this.start_time = "1:15";
-    this.target_id = "#timer";
-}
 
-countdown.prototype.init = function()
-{
-    this.reset();
-    setInterval(this.name + 'tick()', 1000);
-}
+var timeLeft = document.querySelector("#time");
 
-countdown.prototype.reset = function()
-{
-    time = this.start_time.split(":");
-    this.minutes = parseInt(time_ary[0]);
-    this.seconds = parseInt(time_ary[1]);
-    this.updateTarget();
-}
+var totalSeconds = 75;
+var secondsElapsed = 0;
+var interval;
 
-countdown.prototype.tick = function()
-{
-    if(this.seconds > 0 || this.minutes > 0)
-    {
-        this.seconds--;
-        if(this.seconds === 0)
-        {
-            this.minutes--;
-            this.seconds = 59;
+var timerStarted = false;
+
+
+function showTime() {
+    var secondsLeft = totalSeconds - secondsElapsed;
+    timeLeft.textContent = secondsLeft;
+    if(secondsLeft===0){
+        stopTimer();
+        timeLeft.textContent = secondsLeft;
+        if(round===5){
+            document.getElementById("prompt").textContent="You have run out of time. Your final score was: " + score;
+            for (i=0; i<4; i++) {
+                document.getElementById(qindex[i]).remove();
+            }
+            return;
         }
     }
-    this.updateTarget();
 }
 
-countdown.prototype.updateTarget = function()
-{
 
-} */
+function timer() {
+    interval = setInterval(function() {
+        secondsElapsed++;
+        showTime();
+    }, 1000);
+}
+
+function start() {
+    timerStarted = true;
+    timer();
+}
+
+function startQuiz() {
+    if(timerStarted===false) {
+        start();
+        initialize();
+
+    }
+}
+
+function stopTimer() {
+    clearInterval(interval);
+}
+
